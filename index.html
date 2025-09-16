@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>🌐 GSA Prompt Launcher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* CSS remains unchanged */
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1><span class="icon">🚀</span>GSA Prompt Launcher</h1>
+
+<div class="button-container">
+    <div class="tooltip">Pop-ups must be enabled to open all prompts</div>
+    <button id="openAllBtn"><i class="fa-solid fa-bolt-lightning"></i> Launch All Prompts</button>
+</div>
+
+<div class="info" id="initial-info">
+    Click the button to open all your GSA prompts in new tabs instantly.
+</div>
+
+<div id="popup-warning">
+    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Pop-ups Blocked!</strong><br><br>
+    To launch all 5 prompts, please <strong>enable pop-ups</strong> and then click <strong>Retry</strong> or <strong>Allow Pop-ups</strong> below.<br>
+    <a href="https://support.google.com/chrome/answer/95472" target="_blank" style="color:#333; text-decoration:underline;">How to enable pop-ups</a><br>
+    <button id="retryBtn">Retry</button>
+    <button id="allowBtn">Allow Pop-ups</button>
+</div>
+
+<div id="manual-links">
+    <a href="https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=16" target="_blank" class="manual-link">🚀 Open Prompt 1</a>
+    <a href="https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=15" target="_blank" class="manual-link">🚀 Open Prompt 2</a>
+    <a href="https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=14" target="_blank" class="manual-link">🚀 Open Prompt 3</a>
+    <a href="https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=13" target="_blank" class="manual-link">🚀 Open Prompt 4</a>
+    <a href="https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=6" target="_blank" class="manual-link">🚀 Open Prompt 5</a>
+</div>
+</div>
+
+<!-- Tip for browser pop-up -->
+<div id="browser-tip"><i class="fa-solid fa-arrow-up"></i> Pop-up blocked! Click <strong>Allow</strong> at the top-right of your browser toolbar.</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const openAllBtn = document.getElementById('openAllBtn');
+    const popupWarning = document.getElementById('popup-warning');
+    const manualLinks = document.getElementById('manual-links');
+    const retryBtn = document.getElementById('retryBtn');
+    const allowBtn = document.getElementById('allowBtn');
+    const tooltip = document.querySelector('.tooltip');
+    const browserTip = document.getElementById('browser-tip');
+
+    const links = [
+        "https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=16",
+        "https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=15",
+        "https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=14",
+        "https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=13",
+        "https://aiskillshouse.com/student/qr-mediator.html?uid=2239&promptId=6"
+    ];
+
+    function disableButton() {
+        openAllBtn.disabled = true;
+        openAllBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Pop-ups Blocked';
+        popupWarning.style.display = 'block';
+        manualLinks.style.display = 'block';
+        tooltip.style.opacity = '1';
+        browserTip.style.display = 'block'; // Show browser tip
+        setTimeout(() => { tooltip.style.opacity = '0'; }, 3000);
+    }
+
+    function checkPopups() {
+        const testWindow = window.open('about:blank', '_blank', 'width=1,height=1,left=9999,top=9999');
+        if (!testWindow || testWindow.closed || typeof testWindow.closed === 'undefined') {
+            disableButton();
+            return false;
+        }
+        testWindow.close();
+        return true;
+    }
+
+    checkPopups();
+
+    function openAllPrompts() {
+        let popupsBlocked = false;
+        for (const link of links) {
+            const newWindow = window.open(link, '_blank');
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                popupsBlocked = true;
+                break;
+            }
+        }
+        if (popupsBlocked) {
+            disableButton();
+            alert("Your browser blocked the pop-ups. Please enable them or use manual links below.");
+        }
+    }
+
+    openAllBtn.addEventListener('click', openAllPrompts);
+
+    retryBtn.addEventListener('click', function () {
+        if (checkPopups()) {
+            popupWarning.style.display = 'none';
+            manualLinks.style.display = 'none';
+            browserTip.style.display = 'none'; // Hide tip after retry
+            openAllBtn.disabled = false;
+            openAllBtn.innerHTML = '<i class="fa-solid fa-bolt-lightning"></i> Launch All Prompts';
+            openAllPrompts();
+        }
+    });
+
+    allowBtn.addEventListener('click', function () {
+        window.open('https://support.google.com/chrome/answer/95472', '_blank');
+    });
+});
+</script>
+
+</body>
+</html>
